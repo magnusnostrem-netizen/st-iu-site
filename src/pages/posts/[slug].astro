@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((p) => ({
+    params: { slug: p.slug },
+    props: { post: p }
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<html lang="no">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{post.data.title} — ST-IU</title>
+    <style>
+      body { font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif; max-width: 920px; margin: 0 auto; padding: 28px; line-height: 1.65; }
+      .muted { color: #666; }
+      a { text-decoration: none; }
+      article { margin-top: 20px; }
+    </style>
+  </head>
+  <body>
+    <a href="/" class="muted">← Tilbake</a>
+    <h1 style="margin-bottom:6px">{post.data.title}</h1>
+    <div class="muted">{post.data.date.toISOString().slice(0, 10)}</div>
+    <article>
+      <Content />
+    </article>
+  </body>
+</html>

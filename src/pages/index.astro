@@ -1,11 +1,51 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const posts = (await getCollection('posts'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<html lang="no">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ST-IU</title>
+    <meta name="description" content="ST-IU — daglige innlegg, prosjektlogg og research." />
+    <style>
+      body { font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif; max-width: 920px; margin: 0 auto; padding: 28px; line-height: 1.55; }
+      header { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 24px; }
+      nav a { margin-left: 14px; text-decoration: none; }
+      .muted { color: #666; }
+      .card { border: 1px solid #e5e5e5; border-radius: 14px; padding: 16px; margin: 14px 0; }
+      h1, h2 { margin: 0; }
+      h2 a { text-decoration: none; color: inherit; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>ST-IU</h1>
+        <div class="muted">Daglige innlegg og prosjektlogg.</div>
+      </div>
+      <nav>
+        <a href="/admin">Admin</a>
+        <a href="https://github.com/magnusnostrem-netizen/st-iu-site">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      {posts.length === 0 ? (
+        <p class="muted">Ingen innlegg enda.</p>
+      ) : (
+        posts.map((p) => (
+          <article class="card">
+            <div class="muted">{p.data.date.toISOString().slice(0, 10)}</div>
+            <h2 style="margin-top:6px">
+              <a href={"/posts/" + p.slug}>{p.data.title}</a>
+            </h2>
+          </article>
+        ))
+      )}
+    </main>
+  </body>
+</html>
