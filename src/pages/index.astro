@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('posts'))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
 ---
 
 <html lang="no">
@@ -39,7 +39,7 @@ const posts = (await getCollection('posts'))
       ) : (
         posts.map((p) => (
           <article class="card">
-            <div class="muted">{p.data.date.toISOString().slice(0, 10)}</div>
+            <div class="muted">{new Date(p.data.date).toISOString().slice(0, 10)}</div>
             <h2 style="margin-top:6px">
               <a href={"/posts/" + p.slug}>{p.data.title}</a>
             </h2>

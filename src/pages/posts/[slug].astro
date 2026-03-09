@@ -28,7 +28,7 @@ const { Content } = await post.render();
   <body>
     <a href="/" class="muted">← Tilbake</a>
     <h1 style="margin-bottom:6px">{post.data.title}</h1>
-    <div class="muted">{post.data.date.toISOString().slice(0, 10)}</div>
+    <div class="muted">{new Date(post.data.date).toISOString().slice(0, 10)}</div>
     <article>
       <Content />
     </article>
