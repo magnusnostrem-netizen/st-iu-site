@@ -15,9 +15,7 @@
         --accent: #8db2ff;
         --accent-2: #b6c9ff;
       }
-
       * { box-sizing: border-box; }
-
       body {
         margin: 0;
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -28,144 +26,35 @@
           linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
         min-height: 100vh;
       }
-
-      .wrap {
-        width: min(980px, calc(100% - 32px));
-        margin: 0 auto;
-        padding: 28px 0 48px;
-      }
-
-      .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        padding: 18px 0 28px;
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-      }
-
-      .brand img {
-        width: 44px;
-        height: 44px;
-        object-fit: contain;
-        border-radius: 12px;
-        background: rgba(255,255,255,0.03);
-        padding: 4px;
-      }
-
-      .brand-mark {
-        font-size: 0.82rem;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--accent);
-        font-weight: 700;
-      }
-
-      .brand-name {
-        font-size: 1rem;
-        font-weight: 600;
-      }
-
-      .shell {
-        border: 1px solid var(--line);
-        border-radius: 26px;
-        background: var(--panel);
-        padding: 28px;
-      }
-
-      h1 {
-        margin: 0 0 10px 0;
-        font-size: 2rem;
-      }
-
-      .lead {
-        margin: 0 0 24px 0;
-        color: var(--muted);
-      }
-
-      .grid {
-        display: grid;
-        gap: 18px;
-      }
-
-      label {
-        display: block;
-        font-size: 0.95rem;
-        margin-bottom: 8px;
-        color: var(--muted);
-      }
-
+      .wrap { width: min(980px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 48px; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0 28px; }
+      .brand { display: flex; align-items: center; gap: 14px; }
+      .brand img { width: 44px; height: 44px; object-fit: contain; border-radius: 12px; background: rgba(255,255,255,0.03); padding: 4px; }
+      .brand-mark { font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+      .brand-name { font-size: 1rem; font-weight: 600; }
+      .shell { border: 1px solid var(--line); border-radius: 26px; background: var(--panel); padding: 28px; }
+      h1 { margin: 0 0 10px 0; font-size: 2rem; }
+      .lead { margin: 0 0 24px 0; color: var(--muted); }
+      .grid { display: grid; gap: 18px; }
+      label { display: block; font-size: 0.95rem; margin-bottom: 8px; color: var(--muted); }
       input, textarea {
-        width: 100%;
-        border: 1px solid var(--line);
-        background: rgba(255,255,255,0.03);
-        color: var(--text);
-        border-radius: 14px;
-        padding: 14px 16px;
-        font: inherit;
+        width: 100%; border: 1px solid var(--line); background: rgba(255,255,255,0.03);
+        color: var(--text); border-radius: 14px; padding: 14px 16px; font: inherit;
       }
-
-      textarea {
-        min-height: 320px;
-        resize: vertical;
-        line-height: 1.6;
-      }
-
-      .row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-      }
-
-      .actions {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        margin-top: 8px;
-      }
-
+      textarea { min-height: 320px; resize: vertical; line-height: 1.6; }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
       .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 46px;
-        padding: 0 18px;
-        border-radius: 14px;
-        border: 1px solid var(--line);
-        background: rgba(255,255,255,0.03);
-        color: var(--text);
-        text-decoration: none;
-        font-weight: 600;
-        cursor: pointer;
+        display: inline-flex; align-items: center; justify-content: center; min-height: 46px;
+        padding: 0 18px; border-radius: 14px; border: 1px solid var(--line);
+        background: rgba(255,255,255,0.03); color: var(--text); text-decoration: none;
+        font-weight: 600; cursor: pointer;
       }
-
-      .btn.primary {
-        background: linear-gradient(180deg, var(--accent-2), var(--accent));
-        color: #06101f;
-        border-color: transparent;
-      }
-
-      .note {
-        margin-top: 18px;
-        padding: 14px 16px;
-        border-radius: 14px;
-        border: 1px solid var(--line);
-        background: rgba(255,255,255,0.03);
-        color: var(--muted);
-      }
-
-      .small {
-        font-size: 0.92rem;
-      }
-
-      @media (max-width: 760px) {
-        .row { grid-template-columns: 1fr; }
-      }
+      .btn.primary { background: linear-gradient(180deg, var(--accent-2), var(--accent)); color: #06101f; border-color: transparent; }
+      .note { margin-top: 18px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--muted); }
+      .small { font-size: 0.92rem; }
+      .status { margin-bottom: 16px; color: var(--muted); }
+      @media (max-width: 760px) { .row { grid-template-columns: 1fr; } }
     </style>
   </head>
   <body>
@@ -183,9 +72,14 @@
 
       <div class="shell">
         <h1>Write a new post</h1>
-        <p class="lead">
-          This is the custom ST-IU editor shell. Next we will connect it to GitHub publishing.
-        </p>
+        <p class="lead">Sign in with GitHub, then publish directly to the repository.</p>
+
+        <div class="status" id="status">Not signed in.</div>
+
+        <div class="actions" style="margin-bottom: 18px;">
+          <a class="btn" id="loginBtn" href="/api/auth/start">Sign in with GitHub</a>
+          <button class="btn" id="logoutBtn" type="button">Forget local token</button>
+        </div>
 
         <div class="grid">
           <div>
@@ -210,8 +104,9 @@
           </div>
 
           <div class="actions">
-            <button class="btn primary" id="previewBtn" type="button">Generate markdown</button>
+            <button class="btn" id="previewBtn" type="button">Generate markdown</button>
             <button class="btn" id="copyBtn" type="button">Copy markdown</button>
+            <button class="btn primary" id="publishBtn" type="button">Publish to GitHub</button>
           </div>
 
           <div>
@@ -219,8 +114,8 @@
             <textarea id="output" readonly></textarea>
           </div>
 
-          <div class="note small">
-            Right now this editor generates post markdown in the correct format. The next step is connecting GitHub login and one-click publishing from this page.
+          <div class="note small" id="resultBox">
+            Waiting for input.
           </div>
         </div>
       </div>
@@ -234,22 +129,28 @@
       const output = document.getElementById('output');
       const previewBtn = document.getElementById('previewBtn');
       const copyBtn = document.getElementById('copyBtn');
+      const publishBtn = document.getElementById('publishBtn');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const statusEl = document.getElementById('status');
+      const resultBox = document.getElementById('resultBox');
 
       const isoNow = new Date().toISOString();
       date.value = isoNow;
 
       function makeSlug(value) {
-        return value
-          .toLowerCase()
-          .trim()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/^-+|-+$/g, '');
+        return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      }
+
+      function getToken() {
+        return localStorage.getItem('stiu_token') || '';
+      }
+
+      function setStatus() {
+        statusEl.textContent = getToken() ? 'Signed in with GitHub.' : 'Not signed in.';
       }
 
       title.addEventListener('input', () => {
-        if (!slug.dataset.edited) {
-          slug.value = makeSlug(title.value);
-        }
+        if (!slug.dataset.edited) slug.value = makeSlug(title.value);
       });
 
       slug.addEventListener('input', () => {
@@ -263,6 +164,14 @@
         return ---\ntitle: ""\ndate: ""\n---\n\n;
       }
 
+      if (location.hash.startsWith('#token=')) {
+        const token = decodeURIComponent(location.hash.slice('#token='.length));
+        localStorage.setItem('stiu_token', token);
+        history.replaceState(null, '', '/admin');
+      }
+
+      setStatus();
+
       previewBtn.addEventListener('click', () => {
         output.value = buildMarkdown();
       });
@@ -272,6 +181,46 @@
         await navigator.clipboard.writeText(output.value);
         copyBtn.textContent = 'Copied';
         setTimeout(() => copyBtn.textContent = 'Copy markdown', 1200);
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('stiu_token');
+        setStatus();
+        resultBox.textContent = 'Local token removed.';
+      });
+
+      publishBtn.addEventListener('click', async () => {
+        const token = getToken();
+        if (!token) {
+          resultBox.textContent = 'Please sign in with GitHub first.';
+          return;
+        }
+
+        output.value = buildMarkdown();
+        resultBox.textContent = 'Publishing...';
+
+        const resp = await fetch('/api/posts/publish', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            title: title.value,
+            slug: slug.value,
+            date: date.value,
+            content: content.value
+          })
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok) {
+          resultBox.textContent = 'Publish failed: ' + JSON.stringify(data);
+          return;
+        }
+
+        resultBox.textContent = Published: ;
       });
     </script>
   </body>
