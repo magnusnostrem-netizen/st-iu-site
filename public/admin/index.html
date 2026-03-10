@@ -1,10 +1,278 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>ST-IU Admin</title>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <style>
+      :root {
+        --bg: #08111f;
+        --bg-2: #0d1830;
+        --panel: rgba(15, 24, 48, 0.92);
+        --text: #eef4ff;
+        --muted: #a7b4d6;
+        --line: rgba(122, 162, 255, 0.16);
+        --accent: #8db2ff;
+        --accent-2: #b6c9ff;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(88, 132, 255, 0.18), transparent 32%),
+          radial-gradient(circle at 80% 10%, rgba(120, 170, 255, 0.1), transparent 24%),
+          linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+        min-height: 100vh;
+      }
+
+      .wrap {
+        width: min(980px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 28px 0 48px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 18px 0 28px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .brand img {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.03);
+        padding: 4px;
+      }
+
+      .brand-mark {
+        font-size: 0.82rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .brand-name {
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .shell {
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        background: var(--panel);
+        padding: 28px;
+      }
+
+      h1 {
+        margin: 0 0 10px 0;
+        font-size: 2rem;
+      }
+
+      .lead {
+        margin: 0 0 24px 0;
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      label {
+        display: block;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+        color: var(--muted);
+      }
+
+      input, textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.03);
+        color: var(--text);
+        border-radius: 14px;
+        padding: 14px 16px;
+        font: inherit;
+      }
+
+      textarea {
+        min-height: 320px;
+        resize: vertical;
+        line-height: 1.6;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 18px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.03);
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        background: linear-gradient(180deg, var(--accent-2), var(--accent));
+        color: #06101f;
+        border-color: transparent;
+      }
+
+      .note {
+        margin-top: 18px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.03);
+        color: var(--muted);
+      }
+
+      .small {
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 760px) {
+        .row { grid-template-columns: 1fr; }
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand">
+          <img src="/logo.png" alt="ST-IU logo" onerror="this.src='/logo.svg'" />
+          <div>
+            <div class="brand-mark">ST-IU</div>
+            <div class="brand-name">Admin Editor</div>
+          </div>
+        </div>
+        <a href="/" class="btn">Back to site</a>
+      </div>
+
+      <div class="shell">
+        <h1>Write a new post</h1>
+        <p class="lead">
+          This is the custom ST-IU editor shell. Next we will connect it to GitHub publishing.
+        </p>
+
+        <div class="grid">
+          <div>
+            <label for="title">Title</label>
+            <input id="title" type="text" placeholder="Daily build update" />
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="slug">Slug</label>
+              <input id="slug" type="text" placeholder="daily-build-update" />
+            </div>
+            <div>
+              <label for="date">Date</label>
+              <input id="date" type="text" />
+            </div>
+          </div>
+
+          <div>
+            <label for="content">Content</label>
+            <textarea id="content" placeholder="Write your post here..."></textarea>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" id="previewBtn" type="button">Generate markdown</button>
+            <button class="btn" id="copyBtn" type="button">Copy markdown</button>
+          </div>
+
+          <div>
+            <label for="output">Generated markdown</label>
+            <textarea id="output" readonly></textarea>
+          </div>
+
+          <div class="note small">
+            Right now this editor generates post markdown in the correct format. The next step is connecting GitHub login and one-click publishing from this page.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const title = document.getElementById('title');
+      const slug = document.getElementById('slug');
+      const date = document.getElementById('date');
+      const content = document.getElementById('content');
+      const output = document.getElementById('output');
+      const previewBtn = document.getElementById('previewBtn');
+      const copyBtn = document.getElementById('copyBtn');
+
+      const isoNow = new Date().toISOString();
+      date.value = isoNow;
+
+      function makeSlug(value) {
+        return value
+          .toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+
+      title.addEventListener('input', () => {
+        if (!slug.dataset.edited) {
+          slug.value = makeSlug(title.value);
+        }
+      });
+
+      slug.addEventListener('input', () => {
+        slug.dataset.edited = '1';
+      });
+
+      function buildMarkdown() {
+        const t = title.value.trim() || 'Untitled Post';
+        const d = date.value.trim() || new Date().toISOString();
+        const body = content.value.trim() || 'Write here.';
+        return ---\ntitle: ""\ndate: ""\n---\n\n;
+      }
+
+      previewBtn.addEventListener('click', () => {
+        output.value = buildMarkdown();
+      });
+
+      copyBtn.addEventListener('click', async () => {
+        output.value = buildMarkdown();
+        await navigator.clipboard.writeText(output.value);
+        copyBtn.textContent = 'Copied';
+        setTimeout(() => copyBtn.textContent = 'Copy markdown', 1200);
+      });
+    </script>
+  </body>
 </html>
