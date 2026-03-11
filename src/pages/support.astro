@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Support ST-IU</title>
+
+<style>
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:#08111f;
+  color:white;
+  margin:0;
+  padding:40px;
+}
+.wrap{
+  max-width:800px;
+  margin:auto;
+}
+.card{
+  background:#111a33;
+  padding:30px;
+  border-radius:20px;
+  margin-top:20px;
+  border:1px solid rgba(122,162,255,0.16);
+}
+.btn{
+  display:inline-block;
+  padding:14px 22px;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:600;
+  margin-top:10px;
+}
+.paypal{
+  background:#0070ba;
+  color:white;
+}
+.vipps{
+  background:#ff5b24;
+  color:white;
+}
+.qr{
+  max-width:240px;
+  margin-top:15px;
+  border-radius:14px;
+}
+p{
+  color:#c8d4f0;
+  line-height:1.6;
+}
+h1,h2,h3{
+  margin-top:0;
+}
+code{
+  background:rgba(255,255,255,0.06);
+  padding:4px 8px;
+  border-radius:8px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="wrap">
+
+<h1>Support ST-IU</h1>
+
+<p>
+ST-IU is an independent AI research and development project.
+If you want to support the work, you can donate below.
+</p>
+
+<div class="card">
+  <h2>Donate with Vipps</h2>
+  <p>Vipps number:</p>
+  <h3>45867897</h3>
+  <p>You can also scan the QR code if you place it at <code>public/vipps.png</code>.</p>
+  <img src="/vipps.png" class="qr" onerror="this.style.display='none'">
+</div>
+
+<div class="card">
+  <h2>Donate with PayPal</h2>
+  <a class="btn paypal"
+     href="https://paypal.me/punktump"
+     target="_blank"
+     rel="noreferrer">
+     Donate with PayPal
+  </a>
+</div>
+
+</div>
+
+</body>
+</html>
