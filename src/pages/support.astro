@@ -1,95 +1,87 @@
+---
+import support from '../content/site/support.json';
+---
+
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Support ST-IU</title>
+<title>{support.title}</title>
 
 <style>
-body{
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  background:#08111f;
-  color:white;
-  margin:0;
-  padding:40px;
-}
-.wrap{
-  max-width:800px;
-  margin:auto;
-}
-.card{
-  background:#111a33;
-  padding:30px;
-  border-radius:20px;
-  margin-top:20px;
-  border:1px solid rgba(122,162,255,0.16);
-}
-.btn{
-  display:inline-block;
-  padding:14px 22px;
-  border-radius:12px;
-  text-decoration:none;
-  font-weight:600;
-  margin-top:10px;
-}
-.paypal{
-  background:#0070ba;
-  color:white;
-}
-.vipps{
-  background:#ff5b24;
-  color:white;
-}
-.qr{
-  max-width:240px;
-  margin-top:15px;
-  border-radius:14px;
-}
-p{
-  color:#c8d4f0;
-  line-height:1.6;
-}
-h1,h2,h3{
-  margin-top:0;
-}
-code{
-  background:rgba(255,255,255,0.06);
-  padding:4px 8px;
-  border-radius:8px;
-}
+:root{--bg:#08111f;--bg2:#0d1830;--panel:rgba(15,24,48,.9);--text:#eef4ff;--muted:#a7b4d6;--line:rgba(122,162,255,.16);--accent:#8db2ff;--vipps:#ff5b24;--paypal:#0070ba}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at top left, rgba(88,132,255,.18), transparent 32%),radial-gradient(circle at 80% 10%, rgba(120,170,255,.1), transparent 24%),linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);min-height:100vh}
+.wrap{width:min(1100px,calc(100% - 32px));margin:0 auto}
+.topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(8,17,31,.65);border-bottom:1px solid rgba(255,255,255,.04)}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:78px}
+.brand{display:flex;align-items:center;gap:14px}.brand img{width:44px;height:44px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,.03);padding:4px}
+.brand-text{display:flex;flex-direction:column;gap:2px}.brand-mark{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700}.brand-name{font-size:1rem;font-weight:600}
+nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap} nav a{text-decoration:none;color:var(--muted);font-size:.98rem} nav a:hover{color:var(--text)}
+.hero{padding:72px 0 28px}.hero-card{border:1px solid var(--line);border-radius:28px;padding:34px;background:radial-gradient(circle at top left, rgba(141,178,255,.14), transparent 36%),linear-gradient(180deg, rgba(18,30,60,.98) 0%, rgba(10,18,36,.96) 100%);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;font-weight:700}
+.hero h1{font-size:clamp(2.2rem,5vw,4rem);line-height:1;margin:0 0 16px}.hero p{margin:0;max-width:60ch;color:var(--muted);font-size:1.05rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:24px 0 56px}.card{background:var(--panel);padding:28px;border-radius:22px;border:1px solid var(--line);box-shadow:0 16px 40px rgba(0,0,0,.25)}
+.card h2{margin:0 0 12px 0;font-size:1.35rem}.card p{margin:0 0 14px 0;color:var(--muted);line-height:1.6}.big-number{font-size:2rem;font-weight:800;letter-spacing:.03em;margin:10px 0 16px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border-radius:14px;text-decoration:none;border:1px solid var(--line);color:white;font-weight:700}
+.btn.vipps{background:var(--vipps);border-color:transparent}.btn.paypal{background:var(--paypal);border-color:transparent}
+.qr{max-width:240px;width:100%;border-radius:16px;margin-top:12px;background:rgba(255,255,255,.03)}.note{margin-top:14px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);color:var(--muted)}
+.footer{padding:26px 0 44px;border-top:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:.95rem}code{background:rgba(255,255,255,.06);padding:3px 8px;border-radius:8px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}.topbar-inner{align-items:start;flex-direction:column}nav{gap:12px}.hero{padding-top:42px}}
 </style>
 
 </head>
-
 <body>
 
-<div class="wrap">
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">
+      <img src="/logo.png" alt="ST-IU logo" onerror="this.src='/logo.svg'" />
+      <div class="brand-text">
+        <span class="brand-mark">ST-IU</span>
+        <span class="brand-name">Seid Tower Intelligence Unit</span>
+      </div>
+    </div>
 
-<h1>Support ST-IU</h1>
-
-<p>
-ST-IU is an independent AI research and development project.
-If you want to support the work, you can donate below.
-</p>
-
-<div class="card">
-  <h2>Donate with Vipps</h2>
-  <p>Vipps number:</p>
-  <h3>45867897</h3>
-  <p>You can also scan the QR code if you place it at <code>public/vipps.png</code>.</p>
-  <img src="/vipps.png" class="qr" onerror="this.style.display='none'">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/admin">Admin</a>
+      <a href="/support">Support</a>
+    </nav>
+  </div>
 </div>
 
-<div class="card">
-  <h2>Donate with PayPal</h2>
-  <a class="btn paypal"
-     href="https://paypal.me/punktump"
-     target="_blank"
-     rel="noreferrer">
-     Donate with PayPal
-  </a>
-</div>
+<main class="wrap">
+  <section class="hero">
+    <div class="hero-card">
+      <div class="eyebrow">Support · Build · Research</div>
+      <h1>{support.title}</h1>
+      <p>{support.intro}</p>
+    </div>
+  </section>
 
-</div>
+  <section class="grid">
+    <div class="card">
+      <h2>Donate with Vipps</h2>
+      <p>{support.vippsText}</p>
+      <div class="big-number">{support.vippsNumber}</div>
+      <a class="btn vipps" href="https://vipps.no/" target="_blank" rel="noreferrer">Open Vipps</a>
+      <div class="note">If you add your QR image to <code>public/vipps.png</code>, it will appear below automatically.</div>
+      <img src="/vipps.png" class="qr" onerror="this.style.display='none'">
+    </div>
+
+    <div class="card">
+      <h2>Donate with PayPal</h2>
+      <p>{support.paypalText}</p>
+      <div class="big-number">PayPal.me</div>
+      <a class="btn paypal" href={support.paypalUrl} target="_blank" rel="noreferrer">Donate with PayPal</a>
+      <div class="note">PayPal link: <code>{support.paypalUrl}</code></div>
+    </div>
+  </section>
+</main>
+
+<div class="wrap footer">ST-IU · Seid Tower Intelligence Unit</div>
 
 </body>
 </html>

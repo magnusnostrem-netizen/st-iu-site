@@ -1,139 +1,392 @@
-<script>
-  const title = document.getElementById('title');
-  const slug = document.getElementById('slug');
-  const date = document.getElementById('date');
-  const content = document.getElementById('content');
-  const output = document.getElementById('output');
-  const previewBtn = document.getElementById('previewBtn');
-  const copyBtn = document.getElementById('copyBtn');
-  const publishBtn = document.getElementById('publishBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const statusEl = document.getElementById('status');
-  const resultBox = document.getElementById('resultBox');
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ST-IU Admin</title>
+    <style>
+      :root{--bg:#08111f;--bg-2:#0d1830;--panel:rgba(15,24,48,.92);--text:#eef4ff;--muted:#a7b4d6;--line:rgba(122,162,255,.16);--accent:#8db2ff;--accent-2:#b6c9ff}
+      *{box-sizing:border-box}
+      body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at top left, rgba(88,132,255,.18), transparent 32%),radial-gradient(circle at 80% 10%, rgba(120,170,255,.1), transparent 24%),linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);min-height:100vh}
+      .wrap{width:min(1100px,calc(100% - 32px));margin:0 auto;padding:28px 0 48px}
+      .topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 0 28px}
+      .brand{display:flex;align-items:center;gap:14px}.brand img{width:44px;height:44px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,.03);padding:4px}
+      .brand-mark{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700}.brand-name{font-size:1rem;font-weight:600}
+      .shell{border:1px solid var(--line);border-radius:26px;background:var(--panel);padding:28px}
+      .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}.tab{min-height:42px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);cursor:pointer}.tab.active{background:linear-gradient(180deg,var(--accent-2),var(--accent));color:#06101f;border-color:transparent}
+      .status{margin-bottom:16px;color:var(--muted)}
+      .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+      .btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);text-decoration:none;font-weight:600;cursor:pointer}
+      .btn.primary{background:linear-gradient(180deg,var(--accent-2),var(--accent));color:#06101f;border-color:transparent}
+      .grid{display:grid;gap:18px}.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+      label{display:block;font-size:.95rem;margin-bottom:8px;color:var(--muted)}
+      input,textarea{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);border-radius:14px;padding:14px 16px;font:inherit}
+      textarea{min-height:140px;resize:vertical;line-height:1.6}
+      .section{display:none}.section.active{display:block}
+      .note{margin-top:18px;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted)}
+      @media (max-width:760px){.row{grid-template-columns:1fr}}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand">
+          <img src="/logo.png" alt="ST-IU logo" onerror="this.src='/logo.svg'" />
+          <div>
+            <div class="brand-mark">ST-IU</div>
+            <div class="brand-name">Site CMS</div>
+          </div>
+        </div>
+        <a href="/" class="btn">Back to site</a>
+      </div>
 
-  const uploadBtn = document.getElementById('uploadBtn');
-  const mediaFile = document.getElementById('mediaFile');
-  const mediaUrl = document.getElementById('mediaUrl');
+      <div class="shell">
+        <div class="status" id="status">Not signed in.</div>
 
-  const isoNow = new Date().toISOString();
-  date.value = isoNow;
+        <div class="actions" style="margin-bottom:18px;">
+          <a class="btn" href="/api/auth/start">Sign in with GitHub</a>
+          <button class="btn" id="logoutBtn" type="button">Forget local token</button>
+        </div>
 
-  function makeSlug(value) {
-    return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-  }
+        <div class="tabs">
+          <button class="tab active" data-tab="home" type="button">Home</button>
+          <button class="tab" data-tab="about" type="button">About</button>
+          <button class="tab" data-tab="support" type="button">Support</button>
+          <button class="tab" data-tab="post" type="button">Posts</button>
+        </div>
 
-  function getToken() {
-    return localStorage.getItem('stiu_token') || '';
-  }
+        <div id="resultBox" class="note">Ready.</div>
 
-  function setStatus() {
-    statusEl.textContent = getToken() ? 'Signed in with GitHub.' : 'Not signed in.';
-  }
+        <div id="section-home" class="section active">
+          <div class="grid">
+            <div><label>Eyebrow</label><input id="home_eyebrow" /></div>
+            <div><label>Title</label><input id="home_title" /></div>
+            <div><label>Intro</label><textarea id="home_intro"></textarea></div>
+            <div class="row">
+              <div><label>Publishing label</label><input id="home_publishingLabel" /></div>
+              <div><label>Publishing value</label><input id="home_publishingValue" /></div>
+            </div>
+            <div class="row">
+              <div><label>Platform label</label><input id="home_platformLabel" /></div>
+              <div><label>Platform value</label><input id="home_platformValue" /></div>
+            </div>
+            <div class="row">
+              <div><label>Status label</label><input id="home_statusLabel" /></div>
+              <div><label>Status value</label><input id="home_statusValue" /></div>
+            </div>
+            <div><label>Side title</label><input id="home_sideTitle" /></div>
+            <div><label>Side text</label><textarea id="home_sideText"></textarea></div>
+            <div class="row">
+              <div><label>Box 1 title</label><input id="home_box1Title" /></div>
+              <div><label>Box 1 text</label><input id="home_box1Text" /></div>
+            </div>
+            <div class="row">
+              <div><label>Box 2 title</label><input id="home_box2Title" /></div>
+              <div><label>Box 2 text</label><input id="home_box2Text" /></div>
+            </div>
+            <div class="row">
+              <div><label>Box 3 title</label><input id="home_box3Title" /></div>
+              <div><label>Box 3 text</label><input id="home_box3Text" /></div>
+            </div>
+            <div><label>Simple title</label><input id="home_simpleTitle" /></div>
+            <div><label>Simple text</label><textarea id="home_simpleText"></textarea></div>
+            <div class="row">
+              <div><label>Latest title</label><input id="home_latestTitle" /></div>
+              <div><label>Latest text</label><input id="home_latestText" /></div>
+            </div>
+            <div class="row">
+              <div><label>Fast title</label><input id="home_fastTitle" /></div>
+              <div><label>Fast text</label><input id="home_fastText" /></div>
+            </div>
+            <div class="row">
+              <div><label>Next title</label><input id="home_nextTitle" /></div>
+              <div><label>Next text</label><input id="home_nextText" /></div>
+            </div>
+            <div class="actions">
+              <button class="btn" type="button" onclick="loadPage('home')">Reload Home</button>
+              <button class="btn primary" type="button" onclick="savePage('home')">Save Home</button>
+            </div>
+          </div>
+        </div>
 
-  title.addEventListener('input', () => {
-    if (!slug.dataset.edited) slug.value = makeSlug(title.value);
-  });
+        <div id="section-about" class="section">
+          <div class="grid">
+            <div><label>Title</label><input id="about_title" /></div>
+            <div><label>Intro</label><textarea id="about_intro"></textarea></div>
+            <div><label>Body</label><textarea id="about_body" style="min-height:220px"></textarea></div>
+            <div class="actions">
+              <button class="btn" type="button" onclick="loadPage('about')">Reload About</button>
+              <button class="btn primary" type="button" onclick="savePage('about')">Save About</button>
+            </div>
+          </div>
+        </div>
 
-  slug.addEventListener('input', () => {
-    slug.dataset.edited = '1';
-  });
+        <div id="section-support" class="section">
+          <div class="grid">
+            <div><label>Title</label><input id="support_title" /></div>
+            <div><label>Intro</label><textarea id="support_intro"></textarea></div>
+            <div class="row">
+              <div><label>Vipps number</label><input id="support_vippsNumber" /></div>
+              <div><label>Vipps text</label><input id="support_vippsText" /></div>
+            </div>
+            <div class="row">
+              <div><label>PayPal URL</label><input id="support_paypalUrl" /></div>
+              <div><label>PayPal text</label><input id="support_paypalText" /></div>
+            </div>
+            <div class="actions">
+              <button class="btn" type="button" onclick="loadPage('support')">Reload Support</button>
+              <button class="btn primary" type="button" onclick="savePage('support')">Save Support</button>
+            </div>
+          </div>
+        </div>
 
-  function buildMarkdown() {
-    const t = title.value.trim() || 'Untitled Post';
-    const d = date.value.trim() || new Date().toISOString();
-    const body = content.value.trim() || 'Write here.';
-    return `---
-title: "${t.replace(/"/g, '\\"')}"
-date: "${d}"
+        <div id="section-post" class="section">
+          <div class="grid">
+            <div><label>Title</label><input id="post_title" type="text" placeholder="Daily build update" /></div>
+            <div class="row">
+              <div><label>Slug</label><input id="post_slug" type="text" placeholder="daily-build-update" /></div>
+              <div><label>Date</label><input id="post_date" type="text" /></div>
+            </div>
+            <div><label>Content</label><textarea id="post_content" style="min-height:320px" placeholder="Write your post here..."></textarea></div>
+            <div class="actions">
+              <button class="btn" id="previewBtn" type="button">Generate markdown</button>
+              <button class="btn" id="copyBtn" type="button">Copy markdown</button>
+              <button class="btn primary" id="publishBtn" type="button">Publish to GitHub</button>
+            </div>
+            <div style="margin-top:20px">
+              <label for="mediaFile">Upload media</label>
+              <input type="file" id="mediaFile" />
+              <button class="btn" id="uploadBtn" type="button">Upload file</button>
+              <input type="text" id="mediaUrl" placeholder="Uploaded URL appears here" />
+            </div>
+            <div><label>Generated markdown</label><textarea id="post_output" readonly></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const statusEl = document.getElementById('status');
+      const resultBox = document.getElementById('resultBox');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      const post_title = document.getElementById('post_title');
+      const post_slug = document.getElementById('post_slug');
+      const post_date = document.getElementById('post_date');
+      const post_content = document.getElementById('post_content');
+      const post_output = document.getElementById('post_output');
+      const previewBtn = document.getElementById('previewBtn');
+      const copyBtn = document.getElementById('copyBtn');
+      const publishBtn = document.getElementById('publishBtn');
+
+      const uploadBtn = document.getElementById('uploadBtn');
+      const mediaFile = document.getElementById('mediaFile');
+      const mediaUrl = document.getElementById('mediaUrl');
+
+      const isoNow = new Date().toISOString();
+      post_date.value = isoNow;
+
+      function makeSlug(value) {
+        return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      }
+
+      function getToken() {
+        return localStorage.getItem('stiu_token') || '';
+      }
+
+      function setStatus() {
+        statusEl.textContent = getToken() ? 'Signed in with GitHub.' : 'Not signed in.';
+      }
+
+      if (location.hash.startsWith('#token=')) {
+        const token = decodeURIComponent(location.hash.slice('#token='.length));
+        localStorage.setItem('stiu_token', token);
+        history.replaceState(null, '', '/admin');
+      }
+
+      setStatus();
+
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('stiu_token');
+        setStatus();
+        resultBox.textContent = 'Local token removed.';
+      });
+
+      document.querySelectorAll('.tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+          document.querySelectorAll('.section').forEach(x => x.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById('section-' + btn.dataset.tab).classList.add('active');
+        });
+      });
+
+      const homeFields = ['eyebrow','title','intro','publishingLabel','publishingValue','platformLabel','platformValue','statusLabel','statusValue','sideTitle','sideText','box1Title','box1Text','box2Title','box2Text','box3Title','box3Text','simpleTitle','simpleText','latestTitle','latestText','fastTitle','fastText','nextTitle','nextText'];
+      const aboutFields = ['title','intro','body'];
+      const supportFields = ['title','intro','vippsNumber','vippsText','paypalUrl','paypalText'];
+
+      async function loadPage(page) {
+        const token = getToken();
+        if (!token) {
+          resultBox.textContent = 'Please sign in with GitHub first.';
+          return;
+        }
+
+        resultBox.textContent = 'Loading ' + page + '...';
+        const resp = await fetch('/api/site/load?page=' + encodeURIComponent(page), {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await resp.json();
+
+        if (!resp.ok) {
+          resultBox.textContent = 'Load failed: ' + JSON.stringify(data);
+          return;
+        }
+
+        const fields = page === 'home' ? homeFields : page === 'about' ? aboutFields : supportFields;
+        for (const key of fields) {
+          const el = document.getElementById(page + '_' + key);
+          if (el) el.value = data.data[key] ?? '';
+        }
+
+        resultBox.textContent = 'Loaded ' + page + '.';
+      }
+
+      function collectPage(page) {
+        const fields = page === 'home' ? homeFields : page === 'about' ? aboutFields : supportFields;
+        const obj = {};
+        for (const key of fields) {
+          const el = document.getElementById(page + '_' + key);
+          obj[key] = el ? el.value : '';
+        }
+        return obj;
+      }
+
+      async function savePage(page) {
+        const token = getToken();
+        if (!token) {
+          resultBox.textContent = 'Please sign in with GitHub first.';
+          return;
+        }
+
+        resultBox.textContent = 'Saving ' + page + '...';
+
+        const resp = await fetch('/api/site/save', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            page,
+            data: collectPage(page)
+          })
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok) {
+          resultBox.textContent = 'Save failed: ' + JSON.stringify(data);
+          return;
+        }
+
+        resultBox.textContent = 'Saved ' + page + '.';
+      }
+
+      post_title.addEventListener('input', () => {
+        if (!post_slug.dataset.edited) post_slug.value = makeSlug(post_title.value);
+      });
+
+      post_slug.addEventListener('input', () => {
+        post_slug.dataset.edited = '1';
+      });
+
+      function buildMarkdown() {
+        const t = post_title.value.trim() || 'Untitled Post';
+        const d = post_date.value.trim() || new Date().toISOString();
+        const body = post_content.value.trim() || 'Write here.';
+        return ---
+title: ""
+date: ""
 ---
-${body}
-`;
-  }
 
-  if (location.hash.startsWith('#token=')) {
-    const token = decodeURIComponent(location.hash.slice('#token='.length));
-    localStorage.setItem('stiu_token', token);
-    history.replaceState(null, '', '/admin');
-  }
+;
+      }
 
-  setStatus();
+      previewBtn.addEventListener('click', () => {
+        post_output.value = buildMarkdown();
+      });
 
-  previewBtn.addEventListener('click', () => {
-    output.value = buildMarkdown();
-  });
+      copyBtn.addEventListener('click', async () => {
+        post_output.value = buildMarkdown();
+        await navigator.clipboard.writeText(post_output.value);
+        copyBtn.textContent = 'Copied';
+        setTimeout(() => (copyBtn.textContent = 'Copy markdown'), 1200);
+      });
 
-  copyBtn.addEventListener('click', async () => {
-    output.value = buildMarkdown();
-    await navigator.clipboard.writeText(output.value);
-    copyBtn.textContent = 'Copied';
-    setTimeout(() => (copyBtn.textContent = 'Copy markdown'), 1200);
-  });
+      uploadBtn.addEventListener('click', async () => {
+        const file = mediaFile.files[0];
+        if (!file) {
+          resultBox.textContent = 'Please choose a file first.';
+          return;
+        }
 
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('stiu_token');
-    setStatus();
-    resultBox.textContent = 'Local token removed.';
-  });
+        const formData = new FormData();
+        formData.append('file', file);
 
-  uploadBtn.addEventListener('click', async () => {
-    const file = mediaFile.files[0];
-    if (!file) {
-      resultBox.textContent = 'Please choose a file first.';
-      return;
-    }
+        resultBox.textContent = 'Uploading file...';
 
-    const formData = new FormData();
-    formData.append('file', file);
+        const resp = await fetch('/api/media/upload', {
+          method: 'POST',
+          body: formData
+        });
 
-    resultBox.textContent = 'Uploading file...';
+        const data = await resp.json();
 
-    const resp = await fetch('/api/media/upload', {
-      method: 'POST',
-      body: formData
-    });
+        if (!resp.ok) {
+          resultBox.textContent = 'Upload failed: ' + JSON.stringify(data);
+          return;
+        }
 
-    const data = await resp.json();
+        mediaUrl.value = data.url;
+        resultBox.textContent = 'Uploaded: ' + data.url;
+      });
 
-    if (!resp.ok) {
-      resultBox.textContent = 'Upload failed: ' + JSON.stringify(data);
-      return;
-    }
+      publishBtn.addEventListener('click', async () => {
+        const token = getToken();
+        if (!token) {
+          resultBox.textContent = 'Please sign in with GitHub first.';
+          return;
+        }
 
-    mediaUrl.value = data.url;
-    resultBox.textContent = 'Uploaded: ' + data.url;
-  });
+        post_output.value = buildMarkdown();
+        resultBox.textContent = 'Publishing post...';
 
-  publishBtn.addEventListener('click', async () => {
-    const token = getToken();
-    if (!token) {
-      resultBox.textContent = 'Please sign in with GitHub first.';
-      return;
-    }
+        const resp = await fetch('/api/posts/publish', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            title: post_title.value,
+            slug: post_slug.value,
+            date: post_date.value,
+            content: post_content.value
+          })
+        });
 
-    output.value = buildMarkdown();
-    resultBox.textContent = 'Publishing...';
+        const data = await resp.json();
 
-    const resp = await fetch('/api/posts/publish', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-      },
-      body: JSON.stringify({
-        title: title.value,
-        slug: slug.value,
-        date: date.value,
-        content: content.value
-      })
-    });
+        if (!resp.ok) {
+          resultBox.textContent = 'Publish failed: ' + JSON.stringify(data);
+          return;
+        }
 
-    const data = await resp.json();
+        resultBox.textContent = Published: ;
+      });
 
-    if (!resp.ok) {
-      resultBox.textContent = 'Publish failed: ' + JSON.stringify(data);
-      return;
-    }
-
-    resultBox.textContent = `Published: ${data.path}`;
-  });
-</script>
+      loadPage('home');
+    </script>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import home from '../content/site/home.json';
 
 const posts = (await getCollection('posts'))
   .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf())
@@ -11,356 +12,39 @@ const posts = (await getCollection('posts'))
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>ST-IU</title>
-    <meta
-      name="description"
-      content="Seid Tower Intelligence Unit — daily posts, build logs, and research."
-    />
+    <meta name="description" content={home.intro} />
     <style>
       :root {
-        --bg: #08111f;
-        --bg-2: #0d1830;
-        --panel: rgba(15, 24, 48, 0.78);
-        --panel-strong: rgba(18, 30, 60, 0.95);
-        --text: #eef4ff;
-        --muted: #a7b4d6;
-        --line: rgba(122, 162, 255, 0.16);
-        --accent: #8db2ff;
-        --accent-2: #b6c9ff;
-        --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        --bg: #08111f; --bg-2: #0d1830; --panel: rgba(15, 24, 48, 0.78);
+        --text: #eef4ff; --muted: #a7b4d6; --line: rgba(122, 162, 255, 0.16);
+        --accent: #8db2ff; --accent-2: #b6c9ff; --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
       }
-
-      * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-
-      body {
-        margin: 0;
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        color: var(--text);
-        background:
-          radial-gradient(circle at top left, rgba(88, 132, 255, 0.18), transparent 32%),
-          radial-gradient(circle at 80% 10%, rgba(120, 170, 255, 0.1), transparent 24%),
-          linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
-        min-height: 100vh;
-        line-height: 1.6;
-      }
-
-      a { color: inherit; }
-
-      .wrap {
-        width: min(1120px, calc(100% - 32px));
-        margin: 0 auto;
-      }
-
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        backdrop-filter: blur(12px);
-        background: rgba(8, 17, 31, 0.65);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      }
-
-      .topbar-inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        min-height: 78px;
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-      }
-
-      .brand img {
-        width: 44px;
-        height: 44px;
-        object-fit: contain;
-        border-radius: 12px;
-        background: rgba(255,255,255,0.03);
-        padding: 4px;
-      }
-
-      .brand-text {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-      }
-
-      .brand-mark {
-        font-size: 0.82rem;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--accent);
-        font-weight: 700;
-      }
-
-      .brand-name {
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--text);
-      }
-
-      nav {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        flex-wrap: wrap;
-      }
-
-      nav a {
-        text-decoration: none;
-        color: var(--muted);
-        font-size: 0.98rem;
-      }
-
-      nav a:hover { color: var(--text); }
-
-      .hero { padding: 72px 0 36px; }
-
-      .hero-grid {
-        display: grid;
-        grid-template-columns: 1.35fr 0.9fr;
-        gap: 24px;
-        align-items: stretch;
-      }
-
-      .hero-card,
-      .side-card,
-      .post-card,
-      .info-card {
-        border: 1px solid var(--line);
-        border-radius: 26px;
-        background: var(--panel);
-        box-shadow: var(--shadow);
-      }
-
-      .hero-card {
-        padding: 34px;
-        background:
-          radial-gradient(circle at top left, rgba(141, 178, 255, 0.14), transparent 36%),
-          linear-gradient(180deg, rgba(18, 30, 60, 0.98) 0%, rgba(10, 18, 36, 0.96) 100%);
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.85rem;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--accent);
-        margin-bottom: 18px;
-        font-weight: 700;
-      }
-
-      .hero h1 {
-        font-size: clamp(2.3rem, 5vw, 4.5rem);
-        line-height: 0.98;
-        margin: 0 0 16px;
-        letter-spacing: -0.04em;
-      }
-
-      .hero p {
-        margin: 0;
-        max-width: 58ch;
-        color: var(--muted);
-        font-size: 1.06rem;
-      }
-
-      .cta-row {
-        display: flex;
-        gap: 14px;
-        flex-wrap: wrap;
-        margin-top: 28px;
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 48px;
-        padding: 0 18px;
-        border-radius: 14px;
-        text-decoration: none;
-        border: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.02);
-        color: var(--text);
-        font-weight: 600;
-      }
-
-      .btn:hover { transform: translateY(-1px); }
-
-      .btn.primary {
-        background: linear-gradient(180deg, var(--accent-2), var(--accent));
-        color: #06101f;
-        border-color: transparent;
-      }
-
-      .hero-meta {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-        margin-top: 28px;
-      }
-
-      .meta-box {
-        padding: 14px 16px;
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-      }
-
-      .meta-label {
-        font-size: 0.82rem;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-
-      .meta-value {
-        font-size: 1.1rem;
-        margin-top: 6px;
-        font-weight: 700;
-      }
-
-      .side-stack { display: grid; gap: 24px; }
-
-      .side-card { padding: 24px; }
-
-      .side-card h2,
-      .section-head h2 {
-        margin: 0 0 10px;
-        font-size: 1.15rem;
-      }
-
-      .side-card p {
-        margin: 0;
-        color: var(--muted);
-      }
-
-      .mini-list {
-        display: grid;
-        gap: 12px;
-        margin-top: 18px;
-      }
-
-      .mini-item {
-        padding: 14px 16px;
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-      }
-
-      .mini-item strong {
-        display: block;
-        margin-bottom: 4px;
-      }
-
-      .section { padding: 14px 0 56px; }
-
-      .section-head {
-        display: flex;
-        align-items: end;
-        justify-content: space-between;
-        gap: 20px;
-        margin-bottom: 18px;
-      }
-
-      .section-head p {
-        margin: 0;
-        color: var(--muted);
-      }
-
-      .posts {
-        display: grid;
-        gap: 16px;
-      }
-
-      .post-card {
-        padding: 22px;
-        text-decoration: none;
-        transition: transform 0.12s ease, border-color 0.12s ease;
-      }
-
-      .post-card:hover {
-        transform: translateY(-2px);
-        border-color: rgba(141, 178, 255, 0.32);
-      }
-
-      .post-date {
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-
-      .post-title {
-        margin: 8px 0 8px;
-        font-size: 1.25rem;
-        line-height: 1.2;
-      }
-
-      .post-excerpt {
-        margin: 0;
-        color: var(--muted);
-      }
-
-      .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-      }
-
-      .info-card { padding: 22px; }
-
-      .info-card h3 {
-        margin: 0 0 10px;
-        font-size: 1.05rem;
-      }
-
-      .info-card p {
-        margin: 0;
-        color: var(--muted);
-      }
-
-      footer {
-        padding: 24px 0 42px;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
-        color: var(--muted);
-        font-size: 0.95rem;
-      }
-
-      code {
-        background: rgba(255,255,255,0.05);
-        padding: 2px 6px;
-        border-radius: 8px;
-      }
-
-      @media (max-width: 920px) {
-        .hero-grid,
-        .grid-2 {
-          grid-template-columns: 1fr;
-        }
-
-        .hero-meta { grid-template-columns: 1fr; }
-
-        .topbar-inner,
-        .section-head {
-          align-items: start;
-          flex-direction: column;
-        }
-
-        nav { gap: 12px; }
-        .hero { padding-top: 42px; }
-
-        .hero-card,
-        .side-card,
-        .post-card,
-        .info-card {
-          border-radius: 22px;
-        }
-      }
+      *{box-sizing:border-box} html{scroll-behavior:smooth}
+      body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);
+        background:radial-gradient(circle at top left, rgba(88,132,255,.18), transparent 32%),
+        radial-gradient(circle at 80% 10%, rgba(120,170,255,.1), transparent 24%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);min-height:100vh;line-height:1.6}
+      a{color:inherit}.wrap{width:min(1120px,calc(100% - 32px));margin:0 auto}
+      .topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(8,17,31,.65);border-bottom:1px solid rgba(255,255,255,.04)}
+      .topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:78px}
+      .brand{display:flex;align-items:center;gap:14px}.brand img{width:44px;height:44px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,.03);padding:4px}
+      .brand-text{display:flex;flex-direction:column;gap:2px}.brand-mark{font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700}.brand-name{font-size:1rem;font-weight:600;color:var(--text)}
+      nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap} nav a{text-decoration:none;color:var(--muted);font-size:.98rem} nav a:hover{color:var(--text)}
+      .hero{padding:72px 0 36px}.hero-grid{display:grid;grid-template-columns:1.35fr .9fr;gap:24px;align-items:stretch}
+      .hero-card,.side-card,.post-card,.info-card{border:1px solid var(--line);border-radius:26px;background:var(--panel);box-shadow:var(--shadow)}
+      .hero-card{padding:34px;background:radial-gradient(circle at top left, rgba(141,178,255,.14), transparent 36%),linear-gradient(180deg, rgba(18,30,60,.98) 0%, rgba(10,18,36,.96) 100%)}
+      .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;font-weight:700}
+      .hero h1{font-size:clamp(2.3rem,5vw,4.5rem);line-height:.98;margin:0 0 16px;letter-spacing:-.04em}.hero p{margin:0;max-width:58ch;color:var(--muted);font-size:1.06rem}
+      .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border-radius:14px;text-decoration:none;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);font-weight:600}.btn.primary{background:linear-gradient(180deg,var(--accent-2),var(--accent));color:#06101f;border-color:transparent}
+      .hero-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:28px}.meta-box{padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+      .meta-label{font-size:.82rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.meta-value{font-size:1.1rem;margin-top:6px;font-weight:700}
+      .side-stack{display:grid;gap:24px}.side-card{padding:24px}.side-card h2,.section-head h2{margin:0 0 10px;font-size:1.15rem}.side-card p{margin:0;color:var(--muted)}
+      .mini-list{display:grid;gap:12px;margin-top:18px}.mini-item{padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)} .mini-item strong{display:block;margin-bottom:4px}
+      .section{padding:14px 0 56px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:18px}.section-head p{margin:0;color:var(--muted)}
+      .posts{display:grid;gap:16px}.post-card{padding:22px;text-decoration:none}.post-date{color:var(--muted);font-size:.9rem}.post-title{margin:8px 0 8px;font-size:1.25rem;line-height:1.2}.post-excerpt{margin:0;color:var(--muted)}
+      .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.info-card{padding:22px}.info-card h3{margin:0 0 10px;font-size:1.05rem}.info-card p{margin:0;color:var(--muted)}
+      footer{padding:24px 0 42px;border-top:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:.95rem} code{background:rgba(255,255,255,.05);padding:2px 6px;border-radius:8px}
+      @media (max-width:920px){.hero-grid,.grid-2{grid-template-columns:1fr}.hero-meta{grid-template-columns:1fr}.topbar-inner,.section-head{align-items:start;flex-direction:column}nav{gap:12px}.hero{padding-top:42px}.hero-card,.side-card,.post-card,.info-card{border-radius:22px}}
     </style>
   </head>
   <body>
@@ -373,11 +57,11 @@ const posts = (await getCollection('posts'))
             <span class="brand-name">Seid Tower Intelligence Unit</span>
           </div>
         </div>
-
         <nav>
           <a href="/">Home</a>
-          <a href="/admin">Admin</a>`r`n          <a href="/support">Support</a>
-          <a href="https://github.com/magnusnostrem-netizen/st-iu-site">GitHub</a>
+          <a href="/about">About</a>
+          <a href="/admin">Admin</a>
+          <a href="/support">Support</a>
         </nav>
       </div>
     </div>
@@ -386,62 +70,33 @@ const posts = (await getCollection('posts'))
       <section class="hero">
         <div class="hero-grid">
           <div class="hero-card">
-            <div class="eyebrow">Research · Build Log · Daily Posts</div>
-            <h1>A simple publishing home for ST-IU.</h1>
-            <p>
-              ST-IU is a clean and fast site for daily updates, build logs, ideas, and selected research notes.
-              Designed to stay lightweight, professional, and easy to update.
-            </p>
-
+            <div class="eyebrow">{home.eyebrow}</div>
+            <h1>{home.title}</h1>
+            <p>{home.intro}</p>
             <div class="cta-row">
               <a class="btn primary" href="/admin">Open admin</a>
               <a class="btn" href="#latest">Latest posts</a>
             </div>
-
             <div class="hero-meta">
-              <div class="meta-box">
-                <div class="meta-label">Publishing</div>
-                <div class="meta-value">Daily</div>
-              </div>
-              <div class="meta-box">
-                <div class="meta-label">Platform</div>
-                <div class="meta-value">Astro + Pages</div>
-              </div>
-              <div class="meta-box">
-                <div class="meta-label">Status</div>
-                <div class="meta-value">Live</div>
-              </div>
+              <div class="meta-box"><div class="meta-label">{home.publishingLabel}</div><div class="meta-value">{home.publishingValue}</div></div>
+              <div class="meta-box"><div class="meta-label">{home.platformLabel}</div><div class="meta-value">{home.platformValue}</div></div>
+              <div class="meta-box"><div class="meta-label">{home.statusLabel}</div><div class="meta-value">{home.statusValue}</div></div>
             </div>
           </div>
 
           <div class="side-stack">
             <div class="side-card">
-              <h2>What this site is for</h2>
-              <p>
-                A focused front-end for public updates, project milestones, short notes, and ongoing technical work.
-              </p>
-
+              <h2>{home.sideTitle}</h2>
+              <p>{home.sideText}</p>
               <div class="mini-list">
-                <div class="mini-item">
-                  <strong>Daily posts</strong>
-                  Quick updates, progress snapshots, and next steps.
-                </div>
-                <div class="mini-item">
-                  <strong>Build log</strong>
-                  Technical changes, fixes, milestones, and experiments.
-                </div>
-                <div class="mini-item">
-                  <strong>Research notes</strong>
-                  Concepts, observations, and selected thought work.
-                </div>
+                <div class="mini-item"><strong>{home.box1Title}</strong>{home.box1Text}</div>
+                <div class="mini-item"><strong>{home.box2Title}</strong>{home.box2Text}</div>
+                <div class="mini-item"><strong>{home.box3Title}</strong>{home.box3Text}</div>
               </div>
             </div>
-
             <div class="side-card">
-              <h2>Simple update system</h2>
-              <p>
-                Posts live in <code>src/content/posts/</code>. Later, the custom admin page will publish directly to GitHub.
-              </p>
+              <h2>{home.simpleTitle}</h2>
+              <p>{home.simpleText}</p>
             </div>
           </div>
         </div>
@@ -450,11 +105,10 @@ const posts = (await getCollection('posts'))
       <section class="section" id="latest">
         <div class="section-head">
           <div>
-            <h2>Latest posts</h2>
-            <p>The newest published updates from ST-IU.</p>
+            <h2>{home.latestTitle}</h2>
+            <p>{home.latestText}</p>
           </div>
         </div>
-
         <div class="posts">
           {posts.length === 0 ? (
             <div class="post-card">
@@ -475,26 +129,12 @@ const posts = (await getCollection('posts'))
 
       <section class="section">
         <div class="grid-2">
-          <div class="info-card">
-            <h3>Fast publishing</h3>
-            <p>
-              Create a Markdown file, push it, and deploy. Next, we can replace that with a custom ST-IU admin editor.
-            </p>
-          </div>
-
-          <div class="info-card">
-            <h3>Next step</h3>
-            <p>
-              Finish the custom domain setup for <code>st-iu.net</code>, then enable GitHub-based admin publishing.
-            </p>
-          </div>
+          <div class="info-card"><h3>{home.fastTitle}</h3><p>{home.fastText}</p></div>
+          <div class="info-card"><h3>{home.nextTitle}</h3><p>{home.nextText}</p></div>
         </div>
       </section>
     </main>
 
-    <footer class="wrap">
-      ST-IU · Seid Tower Intelligence Unit
-    </footer>
+    <footer class="wrap">ST-IU · Seid Tower Intelligence Unit</footer>
   </body>
 </html>
-
