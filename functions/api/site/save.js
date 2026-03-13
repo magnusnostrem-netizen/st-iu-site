@@ -38,7 +38,7 @@ export async function onRequestPost(context) {
 
     const getResp = await fetch(getUrl, {
       headers: {
-        "Authorization": Bearer ,
+        "Authorization": "Bearer " + token,
         "Accept": "application/vnd.github+json"
       }
     });
@@ -52,12 +52,12 @@ export async function onRequestPost(context) {
     const putResp = await fetch(getUrl, {
       method: "PUT",
       headers: {
-        "Authorization": Bearer ,
+        "Authorization": "Bearer " + token,
         "Accept": "application/vnd.github+json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        message: Update site content: ,
+        message: "Update site content: " + page,
         content: encoded,
         sha: getJson.sha,
         branch: "master"
